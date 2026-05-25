@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Beauty Services at Home — Customer Survey</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --rose: #C8627A; --rose-dark: #9B3F57; --rose-light: #F7E8EC; --rose-pale: #FDF4F6;
+    --gold: #C9A84C; --ink: #1A1118; --ink-soft: #4A3D46; --muted: #8C7A85;
+    --line: rgba(200,98,122,0.15); --white: #FFFFFF; --off: #FAF7F8;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'DM Sans', sans-serif; background: #F5EFF2; color: var(--ink); min-height: 100vh; }
+  .page { max-width: 780px; margin: 0 auto; padding: 48px 24px 80px; }
+  .form-card { background: var(--white); border-radius: 28px; overflow: hidden; box-shadow: 0 8px 48px rgba(26,17,24,0.10); animation: fadeUp 0.4s ease; }
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
+  .hero { padding: 48px 48px 36px; position: relative; overflow: hidden; background: linear-gradient(135deg, #F7E8EC 0%, #FBEDF0 60%, #FDF6F8 100%); }
+  .hero-decor { position: absolute; right: -30px; top: -30px; width: 200px; height: 200px; border-radius: 50%; background: var(--rose); opacity: 0.18; }
+  .hero-decor2 { position: absolute; right: 60px; bottom: -60px; width: 120px; height: 120px; border-radius: 50%; background: var(--rose-dark); opacity: 0.10; }
+  .hero-badge { display: inline-flex; align-items: center; gap: 6px; font-size: 11px; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; padding: 6px 14px; border-radius: 20px; margin-bottom: 16px; background: rgba(200,98,122,0.12); color: var(--rose-dark); }
+  .hero h1 { font-family: 'Cormorant Garamond', serif; font-size: 38px; font-weight: 500; line-height: 1.15; margin-bottom: 10px; color: var(--rose-dark); position: relative; z-index: 1; }
+  .hero p { font-size: 14px; color: var(--muted); line-height: 1.6; max-width: 480px; position: relative; z-index: 1; }
+  .hero-meta { display: flex; gap: 20px; margin-top: 20px; position: relative; z-index: 1; }
+  .meta-chip { display: flex; align-items: center; gap: 6px; font-size: 12px; color: var(--muted); }
+  .meta-chip svg { width: 14px; height: 14px; opacity: 0.7; }
+  .progress-bar-wrap { height: 3px; background: var(--off); }
+  .progress-bar { height: 100%; width: 0%; transition: width 0.4s ease; background: linear-gradient(90deg, var(--rose-light), var(--rose)); }
+  .form-body { padding: 40px 48px 48px; }
+  .section-label { display: flex; align-items: center; gap: 12px; margin: 32px 0 20px; }
+  .section-label:first-child { margin-top: 0; }
+  .section-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--rose); flex-shrink: 0; }
+  .section-label span { font-family: 'Cormorant Garamond', serif; font-size: 18px; font-weight: 500; font-style: italic; color: var(--ink-soft); }
+  .section-line { flex: 1; height: 1px; background: var(--line); }
+  .field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px; }
+  .field-row.full { grid-template-columns: 1fr; }
+  .field { display: flex; flex-direction: column; gap: 6px; }
+  .field label { font-size: 12px; font-weight: 500; letter-spacing: 0.05em; text-transform: uppercase; color: var(--muted); }
+  .field label .opt { font-weight: 400; text-transform: none; letter-spacing: 0; color: #C0ADB7; margin-left: 4px; font-size: 11px; }
+  .req { color: #C8627A; margin-left: 2px; font-size: 13px; font-weight: 500; }
+  .field input[type=text], .field input[type=email], .field input[type=tel], .field textarea, .field select {
+    width: 100%; padding: 12px 16px; border: 1.5px solid #EDE5E9; border-radius: 12px;
+    font-family: 'DM Sans', sans-serif; font-size: 14px; color: var(--ink); background: var(--off);
+    outline: none; transition: border-color 0.2s, background 0.2s, box-shadow 0.2s; -webkit-appearance: none;
+  }
+  .field input:focus, .field select:focus, .field textarea:focus { background: var(--white); border-color: var(--rose); box-shadow: 0 0 0 3px rgba(200,98,122,0.10); }
+  .field textarea { min-height: 90px; resize: vertical; line-height: 1.6; }
+  .field select { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%238C7A85' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 14px center; padding-right: 36px; cursor: pointer; }
+  .pill-group { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 4px; }
+  .pill-group label { display: flex; align-items: center; gap: 7px; padding: 9px 16px; border: 1.5px solid #EDE5E9; border-radius: 40px; font-size: 13px; color: var(--ink-soft); background: var(--off); cursor: pointer; transition: all 0.2s ease; user-select: none; }
+  .pill-group label:hover { border-color: var(--rose); background: var(--rose-pale); }
+  .pill-group input[type=radio], .pill-group input[type=checkbox] { display: none; }
+  .pill-group label:has(input:checked) { border-color: var(--rose); background: var(--rose-pale); color: var(--rose-dark); }
+  .pill-check { width: 16px; height: 16px; border-radius: 50%; border: 1.5px solid currentColor; display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0; opacity: 0.4; transition: opacity 0.2s; }
+  label:has(input:checked) .pill-check { opacity: 1; background: currentColor; }
+  label:has(input:checked) .pill-check::after { content: ''; width: 5px; height: 5px; border-radius: 50%; background: white; display: block; }
+  .conditional { display: none; }
+  .conditional.show { display: block; animation: fadeIn 0.3s ease; }
+  @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+  .submit-area { margin-top: 36px; }
+  .submit-btn { width: 100%; padding: 18px 32px; border: none; border-radius: 16px; font-family: 'DM Sans', sans-serif; font-size: 16px; font-weight: 500; color: var(--white); cursor: pointer; background: var(--rose); box-shadow: 0 6px 24px rgba(200,98,122,0.35); transition: transform 0.2s, box-shadow 0.2s; letter-spacing: 0.02em; }
+  .submit-btn:hover { transform: translateY(-2px); box-shadow: 0 10px 32px rgba(200,98,122,0.45); }
+  .submit-btn:active { transform: scale(0.98); }
+  .submit-btn:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+  .submit-note { text-align: center; font-size: 12px; color: var(--muted); margin-top: 12px; }
+  .success-overlay { display: none; padding: 80px 48px; text-align: center; }
+  .success-overlay.show { display: block; animation: fadeUp 0.5s ease; }
+  .success-icon { width: 72px; height: 72px; border-radius: 50%; background: var(--rose-light); display: flex; align-items: center; justify-content: center; margin: 0 auto 24px; }
+  .success-icon svg { width: 36px; height: 36px; }
+  .success-overlay h2 { font-family: 'Cormorant Garamond', serif; font-size: 32px; font-weight: 500; margin-bottom: 10px; color: var(--rose-dark); }
+  .success-overlay p { font-size: 14px; color: var(--muted); line-height: 1.6; }
+  @media (max-width: 600px) {
+    .page { padding: 24px 16px 60px; }
+    .hero, .form-body { padding: 32px 24px; }
+    .field-row { grid-template-columns: 1fr; }
+    .hero h1 { font-size: 28px; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+  <div class="form-card">
+    <div class="hero">
+      <div class="hero-decor"></div>
+      <div class="hero-decor2"></div>
+      <div class="hero-badge">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+        Beauty Services Survey
+      </div>
+      <h1>Share Your Home Beauty Experience</h1>
+      <p>Help us understand what women in your city need from at-home beauty and mehndi services. Takes only 2 minutes.</p>
+      <div class="hero-meta">
+        <div class="meta-chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>2 minutes</div>
+        <div class="meta-chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>Confidential</div>
+        <div class="meta-chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78L12 21.23l8.84-8.84a5.5 5.5 0 0 0 0-7.78z"/></svg>Free survey</div>
+      </div>
+    </div>
+    <div class="progress-bar-wrap"><div class="progress-bar" id="c-progress"></div></div>
+
+    <div class="form-body" id="c-body">
+      <div class="section-label">
+        <div class="section-dot"></div><span>Personal Information</span><div class="section-line"></div>
+      </div>
+      <div class="field-row">
+        <div class="field"><label>Full Name<span class="req">*</span></label><input type="text" id="c-name" placeholder="Your full name" oninput="updateProgress()" /></div>
+        <div class="field"><label>Age Group<span class="req">*</span></label>
+          <select id="c-age" onchange="updateProgress()">
+            <option value="">Select age group</option>
+            <option>Under 18</option><option>18–25</option><option>26–35</option><option>36–50</option><option>50+</option>
+          </select>
+        </div>
+      </div>
+      <div class="field-row">
+        <div class="field"><label>WhatsApp Number<span class="req">*</span></label><input type="tel" id="c-whatsapp" placeholder="+91 XXXXX XXXXX" oninput="updateProgress()" /></div>
+        <div class="field"><label>Email Address <span class="opt">(optional)</span></label><input type="email" id="c-email" placeholder="your@email.com" /></div>
+      </div>
+      <div class="field-row full">
+        <div class="field"><label>City / Area<span class="req">*</span></label><input type="text" id="c-city" placeholder="Your city or neighbourhood" oninput="updateProgress()" /></div>
+      </div>
+      <div class="field-row full">
+        <div class="field"><label>Gender<span class="req">*</span></label>
+          <div class="pill-group" id="c-gender">
+            <label><input type="radio" name="c-gender" value="Female" /><div class="pill-check"></div><span>Female</span></label>
+            <label><input type="radio" name="c-gender" value="Male" /><div class="pill-check"></div><span>Male</span></label>
+            <label><input type="radio" name="c-gender" value="Other" /><div class="pill-check"></div><span>Other</span></label>
+            <label><input type="radio" name="c-gender" value="Prefer not to say" /><div class="pill-check"></div><span>Prefer not to say</span></label>
+          </div>
+        </div>
+      </div>
+
+      <div class="section-label" style="margin-top:36px">
+        <div class="section-dot"></div><span>Service Preferences</span><div class="section-line"></div>
+      </div>
+      <div class="field-row full">
+        <div class="field"><label>Have you used home beauty services before?<span class="req">*</span></label>
+          <div class="pill-group">
+            <label onclick="toggleSatisfaction(true)"><input type="radio" name="c-used" value="Yes" /><div class="pill-check"></div><span>Yes</span></label>
+            <label onclick="toggleSatisfaction(false)"><input type="radio" name="c-used" value="No" /><div class="pill-check"></div><span>No</span></label>
+          </div>
+        </div>
+      </div>
+      <div class="conditional field-row full" id="satisfaction-block">
+        <div class="field"><label>If yes — how satisfied were you?</label>
+          <div class="pill-group">
+            <label><input type="radio" name="c-sat" value="Very satisfied" /><div class="pill-check"></div><span>Very satisfied</span></label>
+            <label><input type="radio" name="c-sat" value="Satisfied" /><div class="pill-check"></div><span>Satisfied</span></label>
+            <label><input type="radio" name="c-sat" value="Neutral" /><div class="pill-check"></div><span>Neutral</span></label>
+            <label><input type="radio" name="c-sat" value="Unsatisfied" /><div class="pill-check"></div><span>Unsatisfied</span></label>
+          </div>
+        </div>
+      </div>
+      <div class="field-row full" style="margin-top:16px">
+        <div class="field"><label>Which services do you want at home?<span class="req">*</span></label>
+          <div class="pill-group">
+            <label><input type="checkbox" name="c-svc" value="Mehndi" /><div class="pill-check"></div><span>Mehndi</span></label>
+            <label><input type="checkbox" name="c-svc" value="Makeup" /><div class="pill-check"></div><span>Makeup</span></label>
+            <label><input type="checkbox" name="c-svc" value="Hair Styling" /><div class="pill-check"></div><span>Hair Styling</span></label>
+            <label><input type="checkbox" name="c-svc" value="Facial" /><div class="pill-check"></div><span>Facial</span></label>
+            <label><input type="checkbox" name="c-svc" value="Waxing" /><div class="pill-check"></div><span>Waxing</span></label>
+            <label><input type="checkbox" name="c-svc" value="Nail Services" /><div class="pill-check"></div><span>Nail Services</span></label>
+          </div>
+        </div>
+      </div>
+      <div class="field-row full" style="margin-top:16px">
+        <div class="field"><label>Why do you prefer home services?<span class="req">*</span></label>
+          <div class="pill-group">
+            <label><input type="checkbox" name="c-why" value="Saves time" /><div class="pill-check"></div><span>Saves time</span></label>
+            <label><input type="checkbox" name="c-why" value="Easy & comfortable" /><div class="pill-check"></div><span>Easy &amp; comfortable</span></label>
+            <label><input type="checkbox" name="c-why" value="No travel needed" /><div class="pill-check"></div><span>No travel needed</span></label>
+            <label><input type="checkbox" name="c-why" value="Better privacy" /><div class="pill-check"></div><span>Better privacy</span></label>
+            <label><input type="checkbox" name="c-why" value="Flexible timing" /><div class="pill-check"></div><span>Flexible timing</span></label>
+          </div>
+        </div>
+      </div>
+      <div class="field-row full" style="margin-top:16px">
+        <div class="field"><label>Problems you face with home services<span class="req">*</span></label>
+          <div class="pill-group">
+            <label><input type="checkbox" name="c-prob" value="Safety issues" /><div class="pill-check"></div><span>Safety issues</span></label>
+            <label><input type="checkbox" name="c-prob" value="High price" /><div class="pill-check"></div><span>High price</span></label>
+            <label><input type="checkbox" name="c-prob" value="Quality issues" /><div class="pill-check"></div><span>Quality issues</span></label>
+            <label><input type="checkbox" name="c-prob" value="Trust issues" /><div class="pill-check"></div><span>Trust issues</span></label>
+            <label><input type="checkbox" name="c-prob" value="Less options" /><div class="pill-check"></div><span>Less options</span></label>
+          </div>
+        </div>
+      </div>
+
+      <div class="section-label" style="margin-top:36px">
+        <div class="section-dot"></div><span>Pricing &amp; Timing</span><div class="section-line"></div>
+      </div>
+      <div class="field-row">
+        <div class="field"><label>Usual spend on beauty services<span class="req">*</span></label>
+          <div class="pill-group" style="flex-direction:column;gap:6px">
+            <label><input type="radio" name="c-price" value="Below ₹500" /><div class="pill-check"></div><span>Below ₹500</span></label>
+            <label><input type="radio" name="c-price" value="₹500–₹1,000" /><div class="pill-check"></div><span>₹500–₹1,000</span></label>
+            <label><input type="radio" name="c-price" value="₹1,000–₹3,000" /><div class="pill-check"></div><span>₹1,000–₹3,000</span></label>
+            <label><input type="radio" name="c-price" value="₹3,000+" /><div class="pill-check"></div><span>₹3,000+</span></label>
+          </div>
+        </div>
+        <div class="field"><label>Extra you'd pay for home visit<span class="req">*</span></label>
+          <div class="pill-group" style="flex-direction:column;gap:6px">
+            <label><input type="radio" name="c-extra" value="₹0" /><div class="pill-check"></div><span>₹0 (nothing extra)</span></label>
+            <label><input type="radio" name="c-extra" value="₹50–₹100" /><div class="pill-check"></div><span>₹50–₹100</span></label>
+            <label><input type="radio" name="c-extra" value="₹100–₹300" /><div class="pill-check"></div><span>₹100–₹300</span></label>
+            <label><input type="radio" name="c-extra" value="₹300+" /><div class="pill-check"></div><span>₹300+</span></label>
+          </div>
+        </div>
+      </div>
+      <div class="field-row full" style="margin-top:16px">
+        <div class="field"><label>Preferred appointment time<span class="req">*</span></label>
+          <div class="pill-group">
+            <label><input type="checkbox" name="c-time" value="Morning (8am–12pm)" /><div class="pill-check"></div><span>Morning (8am–12pm)</span></label>
+            <label><input type="checkbox" name="c-time" value="Afternoon (12–4pm)" /><div class="pill-check"></div><span>Afternoon (12–4pm)</span></label>
+            <label><input type="checkbox" name="c-time" value="Evening (4–8pm)" /><div class="pill-check"></div><span>Evening (4–8pm)</span></label>
+          </div>
+        </div>
+      </div>
+
+      <div class="section-label" style="margin-top:36px">
+        <div class="section-dot"></div><span>Discovery &amp; Feedback</span><div class="section-line"></div>
+      </div>
+      <div class="field-row">
+        <div class="field"><label>How do you find beauticians now?<span class="req">*</span></label>
+          <div class="pill-group" style="flex-direction:column;gap:6px">
+            <label><input type="radio" name="c-find" value="Instagram" /><div class="pill-check"></div><span>Instagram</span></label>
+            <label><input type="radio" name="c-find" value="WhatsApp" /><div class="pill-check"></div><span>WhatsApp</span></label>
+            <label><input type="radio" name="c-find" value="Urban Company" /><div class="pill-check"></div><span>Urban Company</span></label>
+            <label><input type="radio" name="c-find" value="Friends / Family" /><div class="pill-check"></div><span>Friends / Family</span></label>
+            <label><input type="radio" name="c-find" value="Local Salon" /><div class="pill-check"></div><span>Local Salon</span></label>
+          </div>
+        </div>
+        <div class="field"><label>Would you use an app for bookings?<span class="req">*</span></label>
+          <div class="pill-group" style="flex-direction:column;gap:6px">
+            <label><input type="radio" name="c-app" value="Yes" /><div class="pill-check"></div><span>Yes</span></label>
+            <label><input type="radio" name="c-app" value="Maybe" /><div class="pill-check"></div><span>Maybe</span></label>
+            <label><input type="radio" name="c-app" value="No" /><div class="pill-check"></div><span>No</span></label>
+          </div>
+        </div>
+      </div>
+      <div class="field-row full" style="margin-top:16px">
+        <div class="field"><label>Any suggestions? <span class="opt">(optional)</span></label><textarea id="c-suggestions" placeholder="Share your thoughts, ideas, or feedback..."></textarea></div>
+      </div>
+
+      <div class="submit-area">
+        <button class="submit-btn" id="c-submit-btn" onclick="submitForm()">Submit Survey &nbsp;→</button>
+        <p class="submit-note">Your responses are kept confidential and used only for research.</p>
+      </div>
+    </div>
+
+    <div class="success-overlay" id="c-success">
+      <div class="success-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#C8627A" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></div>
+      <h2>Thank you so much!</h2>
+      <p>Your feedback has been recorded in our database. You're helping shape better beauty services for women across India.</p>
+    </div>
+  </div>
+</div>
+
+<script>
+  // ── PASTE YOUR APPS SCRIPT WEB APP URL HERE ──
+  const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxAaw596DXNcAHgt2LDhv9J9FX8rcX_V2eXt7cFrwMrBbVPWerFfeUF_3iPGYCzCTKx/exec";
+
+  function toggleSatisfaction(show) {
+    document.getElementById('satisfaction-block').classList.toggle('show', show);
+  }
+
+  function getRadioVal(name) {
+    const el = document.querySelector(`input[name="${name}"]:checked`);
+    return el ? el.value : "";
+  }
+
+  function getCheckboxVals(name) {
+    return [...document.querySelectorAll(`input[name="${name}"]:checked`)].map(el => el.value);
+  }
+
+  function updateProgress() {
+    const name = document.getElementById('c-name').value.trim();
+    const age  = document.getElementById('c-age').value;
+    const pct  = name ? (age ? 60 : 30) : 5;
+    document.getElementById('c-progress').style.width = pct + '%';
+  }
+
+  async function submitForm() {
+    const name = document.getElementById('c-name').value.trim();
+    if (!name) { alert('⚠️ Full Name is required.'); return; }
+    if (!document.getElementById('c-age').value) { alert('⚠️ Please select your Age Group.'); return; }
+    if (!document.getElementById('c-whatsapp').value.trim()) { alert('⚠️ WhatsApp Number is required.'); return; }
+    if (!document.getElementById('c-city').value.trim()) { alert('⚠️ City / Area is required.'); return; }
+    if (!document.querySelector('input[name="c-gender"]:checked')) { alert('⚠️ Please select your Gender.'); return; }
+    if (!document.querySelector('input[name="c-used"]:checked')) { alert('⚠️ Please answer: Have you used home beauty services before?'); return; }
+    if (!document.querySelector('input[name="c-svc"]:checked')) { alert('⚠️ Please select at least one service you want at home.'); return; }
+    if (!document.querySelector('input[name="c-why"]:checked')) { alert('⚠️ Please select why you prefer home services.'); return; }
+    if (!document.querySelector('input[name="c-price"]:checked')) { alert('⚠️ Please select your usual spend on beauty services.'); return; }
+    if (!document.querySelector('input[name="c-extra"]:checked')) { alert('⚠️ Please select how much extra you can pay for home visit.'); return; }
+    if (!document.querySelector('input[name="c-time"]:checked')) { alert('⚠️ Please select your preferred appointment time.'); return; }
+    if (!document.querySelector('input[name="c-find"]:checked')) { alert('⚠️ Please select how you find beauticians now.'); return; }
+    if (!document.querySelector('input[name="c-app"]:checked')) { alert('⚠️ Please answer: Would you use an app for bookings?'); return; }
+
+    const btn = document.getElementById('c-submit-btn');
+    btn.disabled = true;
+    btn.textContent = 'Submitting…';
+
+    const payload = {
+      formType:      "customer",
+      name:          name,
+      age:           document.getElementById('c-age').value,
+      whatsapp:      document.getElementById('c-whatsapp').value.trim(),
+      email:         document.getElementById('c-email').value.trim(),
+      city:          document.getElementById('c-city').value.trim(),
+      gender:        getRadioVal('c-gender'),
+      usedBefore:    getRadioVal('c-used'),
+      satisfaction:  getRadioVal('c-sat'),
+      services:      getCheckboxVals('c-svc'),
+      whyHome:       getCheckboxVals('c-why'),
+      problems:      getCheckboxVals('c-prob'),
+      usualSpend:    getRadioVal('c-price'),
+      extraPay:      getRadioVal('c-extra'),
+      preferredTime: getCheckboxVals('c-time'),
+      howFinds:      getRadioVal('c-find'),
+      wouldUseApp:   getRadioVal('c-app'),
+      suggestions:   document.getElementById('c-suggestions').value.trim()
+    };
+
+    try {
+      await fetch(SCRIPT_URL, {
+        method: "POST",
+        body: JSON.stringify(payload)
+      });
+    } catch (err) {
+      console.error("Submission error:", err);
+    }
+
+    document.getElementById('c-progress').style.width = '100%';
+    document.getElementById('c-body').style.display = 'none';
+    document.getElementById('c-success').classList.add('show');
+  }
+</script>
+</body>
+</html>
